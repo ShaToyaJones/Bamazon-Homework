@@ -1,0 +1,11 @@
+"item_id";"product_name";"department_name";"price";"stock_quantity"
+1;"laptop";"electronics";650.0;3
+2;"all in one computer";"electronics";1920.0;9
+3;"cell phone";"electronics";920.0;53
+4;"tuna";"grocery";1.57;999
+5;"black beans";"grocery";0.99;333
+6;"corn bread";"grocery";2.59;137
+7;"guitar";"music instruments";249.99;29
+8;"drums";"music instruments";349.99;9
+9;"piano";"music instruments";23999.0;3
+10;"microphone";"music instruments";99.0;24
