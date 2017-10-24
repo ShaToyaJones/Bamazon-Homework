@@ -33,158 +33,48 @@ function displayProducts() {
 }
 
 //#6 Prompt user asking them the ID of the product they would like to buy.
-function productSearch() {
-  inquirer
-  .prompt({
+inquirer.prompt({
     type: "input",
     name: "itemID",
-    message: "Please enter the ID number of the product you would like to purchase."
+    message: "Please enter the item_ID number of the product you would like to purchase.",
+    validate: function(value) {
+      if (isNaN(value) === false) {
+        return true;
+      } 
+      else {
+        console.log("\nEnter only the item_id of the product!\n");
+        return false;
+      }
+    }
+  }, {
+  //Prompt user asking how many units of the product they would like to buy.
+    type: "input",
+    name: "quantity",
+    message: "How many units of the product would you like to purchase?",
+    validate: function(value) {
+      if (isNan(value) === false) {
+        return true;
+      }
+      else {
+        console.log("\nPlease enter a number less than or equal to the current quantity!\n");
+      return false;
+      }
+    }
   })
   .then(function(answer) {
-    var query = "SELECT item_id FROM products WHERE ?";
+    var query = "SELECT item_id, product_name, department_name, price, stock_quantity FROM products WHERE ?";
     connection.query(query, { itemID: answer.itemID }, function(err, res) {
-      for (var i = 0; i < res[i].length; i++) {
-        console.log("item_id: " + res[i].item_id);
+      if (answer.itemID <= stock_quantity) {
+        console.log("\n I'm sorry, that quantity is not available.\n");
+        return true;
       }
-      productSearch();
+      else {
+        return false;
+      }
     });
   });
-}
 
 
-//Prompt user asking how many units of the product they would like to buy.
+
 
 //#7 
-
-// function runSearch() {
-//   inquirer
-//     .prompt({
-//       name: "action",
-//       type: "list",
-//       message: "What would you like to do?",
-//       choices: [
-//         "Find songs by artist",
-//         "Find all artists who appear more than once",
-//         "Find data within a specific range",
-//         "Search for a specific song"
-//       ]
-//     })
-//     .then(function(answer) {
-//       switch (answer.action) {
-//         case "Find songs by artist":
-//           artistSearch();
-//           break;
-
-//         case "Find all artists who appear more than once":
-//           multiSearch();
-//           break;
-
-//         case "Find data within a specific range":
-//           rangeSearch();
-//           break;
-
-//         case "Search for a specific song":
-//           songSearch();
-//           break;
-//       }
-//     });
-// }
-
-// function artistSearch() {
-//   inquirer
-//     .prompt({
-//       name: "artist",
-//       type: "input",
-//       message: "What artist would you like to search for?"
-//     })
-//     .then(function(answer) {
-//       var query = "SELECT position, song, year FROM top5000 WHERE ?";
-//       connection.query(query, { artist: answer.artist }, function(err, res) {
-//         for (var i = 0; i < res.length; i++) {
-//           console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
-//         }
-//         runSearch();
-//       });
-//     });
-// }
-
-// function multiSearch() {
-//   var query = "SELECT artist FROM top5000 GROUP BY artist HAVING count(*) > 1";
-//   connection.query(query, function(err, res) {
-//     for (var i = 0; i < res.length; i++) {
-//       console.log(res[i].artist);
-//     }
-//     runSearch();
-//   });
-// }
-
-// function rangeSearch() {
-//   inquirer
-//     .prompt([
-//       {
-//         name: "start",
-//         type: "input",
-//         message: "Enter starting position: ",
-//         validate: function(value) {
-//           if (isNaN(value) === false) {
-//             return true;
-//           }
-//           return false;
-//         }
-//       },
-//       {
-//         name: "end",
-//         type: "input",
-//         message: "Enter ending position: ",
-//         validate: function(value) {
-//           if (isNaN(value) === false) {
-//             return true;
-//           }
-//           return false;
-//         }
-//       }
-//     ])
-//     .then(function(answer) {
-//       var query = "SELECT position,song,artist,year FROM top5000 WHERE position BETWEEN ? AND ?";
-//       connection.query(query, [answer.start, answer.end], function(err, res) {
-//         for (var i = 0; i < res.length; i++) {
-//           console.log(
-//             "Position: " +
-//               res[i].position +
-//               " || Song: " +
-//               res[i].song +
-//               " || Artist: " +
-//               res[i].artist +
-//               " || Year: " +
-//               res[i].year
-//           );
-//         }
-//         runSearch();
-//       });
-//     });
-// }
-
-// function songSearch() {
-//   inquirer
-//     .prompt({
-//       name: "song",
-//       type: "input",
-//       message: "What song would you like to look for?"
-//     })
-//     .then(function(answer) {
-//       console.log(answer.song);
-//       connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
-//         console.log(
-//           "Position: " +
-//             res[0].position +
-//             " || Song: " +
-//             res[0].song +
-//             " || Artist: " +
-//             res[0].artist +
-//             " || Year: " +
-//             res[0].year
-//         );
-//         runSearch();
-//       });
-//     });
-// }
