@@ -1,6 +1,9 @@
+//Require the mysql and inquirer packages.
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+
+//Create connection to the database.
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -23,7 +26,7 @@ function displayProducts() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
 
-    //Log all results of the SELECT statement.
+    //Log all results from the products table using the SELECT statement.
     console.log(res);
     connection.end();
   });
