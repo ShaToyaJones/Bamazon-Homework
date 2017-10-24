@@ -32,6 +32,30 @@ function displayProducts() {
   });
 }
 
+//#6 Prompt user asking them the ID of the product they would like to buy.
+function productSearch() {
+  inquirer
+  .prompt({
+    type: "input",
+    name: "itemID",
+    message: "Please enter the ID number of the product you would like to purchase."
+  })
+  .then(function(answer) {
+    var query = "SELECT item_id FROM products WHERE ?";
+    connection.query(query, { itemID: answer.itemID }, function(err, res) {
+      for (var i = 0; i < res[i].length; i++) {
+        console.log("item_id: " + res[i].item_id);
+      }
+      productSearch();
+    });
+  });
+}
+
+
+//Prompt user asking how many units of the product they would like to buy.
+
+//#7 
+
 // function runSearch() {
 //   inquirer
 //     .prompt({
