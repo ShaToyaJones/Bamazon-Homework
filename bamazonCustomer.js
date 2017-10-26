@@ -28,12 +28,14 @@ function displayProducts() {
 
     //Log all results from the products table using the SELECT statement.
     console.log(res);
-    connection.end();
+    startPrompt();
   });
 }
 
-//#6 Prompt user asking them the ID of the product they would like to buy.
-inquirer.prompt({
+function startPrompt() {
+  //#6 Prompt user asking them the ID of the product they would like to buy.
+inquirer.prompt([
+  {
     type: "input",
     name: "itemID",
     message: "Please enter the item ID number of the product you would like to purchase.",
@@ -52,7 +54,7 @@ inquirer.prompt({
     name: "quantity",
     message: "How many units of the product would you like to purchase?",
     validate: function(value) {
-      if (isNan(value) === false) {
+      if (isNaN(value) === false) {
         return true;
       }
       else {
@@ -60,7 +62,13 @@ inquirer.prompt({
       return false;
       }
     }
-  })
+  }])
   .then(function(answer) {
+    var query = "SELECT * FROM products WHERE ?"
+    connection.query(query, {item_id: answer.itemID}, function(err, res) {
+      if (err) throw err;
+
+    });
+  });
+}
     
-//#7 
