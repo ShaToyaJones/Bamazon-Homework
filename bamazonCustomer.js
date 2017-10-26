@@ -36,7 +36,7 @@ function displayProducts() {
 inquirer.prompt({
     type: "input",
     name: "itemID",
-    message: "Please enter the item_ID number of the product you would like to purchase.",
+    message: "Please enter the item ID number of the product you would like to purchase.",
     validate: function(value) {
       if (isNaN(value) === false) {
         return true;
@@ -62,19 +62,5 @@ inquirer.prompt({
     }
   })
   .then(function(answer) {
-    var query = "SELECT item_id, product_name, department_name, price, stock_quantity FROM products WHERE ?";
-    connection.query(query, { itemID: answer.itemID }, function(err, res) {
-      if (answer.itemID <= stock_quantity) {
-        console.log("\n I'm sorry, that quantity is not available.\n");
-        return true;
-      }
-      else {
-        return false;
-      }
-    });
-  });
-
-
-
-
+    
 //#7 
