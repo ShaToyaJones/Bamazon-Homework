@@ -68,7 +68,52 @@ inquirer.prompt([
     connection.query(query, {item_id: answer.itemID}, function(err, res) {
       if (err) throw err;
 
+      connection.query("SELECT * FROM products WHERE itemID = " + item_id, function(err, res) {
+    if (err) throw err;
+
+    //Log all results from the products table using the SELECT statement.
+    console.log(err);
+
+    if (quantity <= answer.itemID.stock_quantity) {
+      var total = answer.itemID.price * quantity;
+    console.log("\n Your order has been placed! \n");
+    console.log("\n Your total is \n" + quantity + "" + answer.itemID.product_name + " is " + total);
+    connection.query("UPDATE products SET stock_quantity = stock_quantity - " + value + "WHERE item_id");
+    console.log(res.stock_quantity + item_id);
+
+    process.exit()
+  }
+  else {
+    console.log("\n Insufficient quantity! Please try again.\n")
+    }
+    process.exit()
+  
+  });
+
     });
   });
 }
-    
+
+// function orderPlaced(itemID, quantity) {
+//   connection.query("SELECT * FROM products WHERE itemID = " + item_id, function(err, res) {
+//     if (err) throw err;
+
+//     //Log all results from the products table using the SELECT statement.
+//     console.log(err);
+
+//     if (quantity <= answer.itemID.stock_quantity) {
+//       var total = answer.itemID.price * quantity;
+//     console.log("\n Your order has been placed! \n");
+//     console.log("\n Your total is \n" + quantity + "" + answer.itemID.product_name + " is " + total);
+//     connection.query("UPDATE products SET stock_quantity = stock_quantity - " + value + "WHERE item_id");
+//     console.log(res.stock_quantity + item_id);
+
+//     process.exit()
+//   }
+//   else {
+//     console.log("\n Insufficient quantity! Please try again.\n")
+//     }
+//     process.exit()
+  
+//   });
+// }
